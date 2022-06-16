@@ -61,6 +61,7 @@ import com.myjeeva.digitalocean.pojo.Tag;
 import com.myjeeva.digitalocean.pojo.Tags;
 import com.myjeeva.digitalocean.pojo.Volume;
 import com.myjeeva.digitalocean.pojo.Volumes;
+import com.myjeeva.digitalocean.pojo.Resources;
 import java.util.List;
 
 /**
@@ -1955,4 +1956,12 @@ public interface DigitalOcean {
       throws DigitalOceanException, RequestUnsuccessfulException;
 
   Delete deleteProject(String projectId) throws DigitalOceanException, RequestUnsuccessfulException;
+
+  Resources listProjectResources(Project project) throws DigitalOceanException, RequestUnsuccessfulException;
+
+  Resources assignResourcesToProject(Project project, Resources resources) throws DigitalOceanException, RequestUnsuccessfulException;
+
+  Resources listDefaultProjectResources() throws DigitalOceanException, RequestUnsuccessfulException;
+
+  Resources assignDefaultProjectResources(Resources resources) throws DigitalOceanException, RequestUnsuccessfulException;
 }

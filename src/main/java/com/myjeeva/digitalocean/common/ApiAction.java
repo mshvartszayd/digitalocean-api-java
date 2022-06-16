@@ -56,6 +56,7 @@ import com.myjeeva.digitalocean.pojo.Tag;
 import com.myjeeva.digitalocean.pojo.Tags;
 import com.myjeeva.digitalocean.pojo.Volume;
 import com.myjeeva.digitalocean.pojo.Volumes;
+import com.myjeeva.digitalocean.pojo.Resources;
 
 /**
  * Enumeration of DigitalOcean RESTful resource information.
@@ -196,6 +197,12 @@ public enum ApiAction {
   UPDATE_DEFAULT_PROJECT("/projects/default", "project", RequestMethod.PUT, Project.class),
   PATCH_DEFAULT_PROJECT("/projects/default", "project", RequestMethod.PATCH, Project.class),
   DELETE_PROJECT("/projects/%s", "response", RequestMethod.DELETE, Delete.class),
+
+  // Project Resources
+  GET_PROJECT_RESOURCES("/projects/%s/resources", "project", RequestMethod.GET, Resources.class),
+  GET_DEFAULT_PROJECT_RESOURCES("/projects/default/resources", "project", RequestMethod.GET, Resources.class),
+  ASSIGN_PROJECT_RESOURCES("/projects/%s/resources", "project", RequestMethod.POST, Resources.class),
+  ASSIGN_DEFAULT_PROJECT_RESOURCES("/projects/default/resources", "project", RequestMethod.POST, Resources.class),
 
   // Load Balancers
   CREATE_LOAD_BALANCER("/load_balancers", "load_balancer", RequestMethod.POST, LoadBalancer.class),

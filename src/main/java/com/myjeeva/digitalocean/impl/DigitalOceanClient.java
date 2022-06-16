@@ -91,6 +91,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -1770,6 +1772,49 @@ public class DigitalOceanClient implements DigitalOcean, Constants {
     Object[] params = {projectId};
     return (Delete) perform(new ApiRequest(ApiAction.DELETE_PROJECT, params)).getData();
   }
+
+  @Override
+  public Resources listProjectResources(Project project) throws DigitalOceanException, RequestUnsuccessfulException {
+    if (null == project
+            || StringUtils.isBlank(project.getId())) {
+      throw new IllegalArgumentException(
+              "Missing required parameters [Name, Description, Purpose].");
+    }
+
+    Object[] params = {project.getId()};
+
+    return (Resources) perform(new ApiRequest(ApiAction.GET_PROJECT_RESOURCES, params)).getData();
+  }
+
+  @Override
+  public Resources assignResourcesToProject(Project project, Resources resources) throws DigitalOceanException, RequestUnsuccessfulException {
+    if (null == project
+            || StringUtils.isBlank(project.getId())) {
+      throw new IllegalArgumentException(
+              "Missing required parameters [Name, Description, Purpose].");
+    }
+
+    Object[] params = {project.getId()};
+
+    Map<String, List<String>> data = new HashMap<>();
+    data.put("resources",
+            resources.getResources().stream()
+                    .map(resource -> "do:" + resource.getType().toString() + ":" +  resource.getId())
+                    .collect(Collectors.toList()));
+
+    return (Resources) perform(new ApiRequest(ApiAction.ASSIGN_PROJECT_RESOURCES, data, params)).getData();
+  }
+
+  @Override
+  public Resources listDefaultProjectResources() throws DigitalOceanException, RequestUnsuccessfulException {
+    return (Resources) perform(new ApiRequest(ApiAction.GET_DEFAULT_PROJECT_RESOURCES)).getData();
+  }
+
+  @Override
+  public Resources assignDefaultProjectResources(Resources resources) throws DigitalOceanException, RequestUnsuccessfulException {
+    return (Resources) perform(new ApiRequest(ApiAction.ASSIGN_DEFAULT_PROJECT_RESOURCES)).getData();
+  }
+
 
   //
   // Private methods

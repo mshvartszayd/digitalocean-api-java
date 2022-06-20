@@ -43,10 +43,13 @@ public enum ResourceType {
   BACKEND("backend"),
 
   @SerializedName("floating_ip")
-  FLOATING_IP("floating_ip"),
+  FLOATING_IP("floatingip"),
 
-  @SerializedName("load_balancer")
-  LOAD_BALANCER("load_balancer");
+  @SerializedName("loadbalancer")
+  LOAD_BALANCER("loadbalancer"),
+
+  @SerializedName("firewall")
+  FIREWALL("firewall");
 
   private String value;
 

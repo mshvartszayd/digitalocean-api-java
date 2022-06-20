@@ -1625,6 +1625,14 @@ public class DigitalOceanClient implements DigitalOcean, Constants {
   }
 
   @Override
+  public Firewalls listDropletFirewalls(Integer dropletId) throws DigitalOceanException, RequestUnsuccessfulException {
+    validateDropletId(dropletId);
+
+    Object[] params = {dropletId};
+    return (Firewalls) perform(new ApiRequest(ApiAction.LIST_DROPLET_FIREWALLS, params)).getData();
+  }
+
+  @Override
   public Project createProject(Project project)
       throws DigitalOceanException, RequestUnsuccessfulException {
 

@@ -1883,6 +1883,8 @@ public interface DigitalOcean {
   Firewalls getAvailableFirewalls(Integer pageNo, Integer perPage)
       throws DigitalOceanException, RequestUnsuccessfulException;
 
+  Firewalls listDropletFirewalls(Integer dropletId) throws DigitalOceanException, RequestUnsuccessfulException;
+
   /**
    * Method allows you to create a new project.
    *

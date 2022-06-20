@@ -58,6 +58,7 @@ public enum ApiAction {
   ENABLE_DROPLET_PRIVATE_NETWORKING(
       "/droplets/%s/actions", "action", RequestMethod.POST, Action.class),
   SNAPSHOT_DROPLET("/droplets/%s/actions", "action", RequestMethod.POST, Action.class),
+  LIST_DROPLET_FIREWALLS("/droplets/%s/firewalls", "firewalls", RequestMethod.GET, Firewalls.class),
 
   // Account
   GET_ACCOUNT_INFO("/account", "account", RequestMethod.GET, Account.class),

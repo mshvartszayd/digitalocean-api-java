@@ -18,61 +18,45 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.myjeeva.digitalocean.common;
+package com.myjeeva.digitalocean.pojo;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.StringUtils;
+import com.myjeeva.digitalocean.common.ResourceStatus;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * Enumeration of DigitalOcean Resource Types
  *
- * @author Jeevanandam M. (jeeva@myjeeva.com)
- * @since v2.0
  */
-public enum ResourceType {
-  @SerializedName("droplet")
-  DROPLET("droplet"),
+public class ProjectResources extends Base {
+  @Expose
+  @SerializedName("resources")
+  private List<ProjectResource> resources;
 
-  @SerializedName("volume")
-  VOLUME("volume"),
+  public ProjectResources() {
+    // Default Constructor
+  }
 
-  @SerializedName("image")
-  IMAGE("image"),
-
-  @SerializedName("backend")
-  BACKEND("backend"),
-
-  @SerializedName("floating_ip")
-  FLOATING_IP("floatingip"),
-
-  @SerializedName("loadbalancer")
-  LOAD_BALANCER("loadbalancer"),
-
-  @SerializedName("firewall")
-  FIREWALL("firewall");
-
-  private String value;
-
-  private ResourceType(String value) {
-    this.value = value;
+  public ProjectResources(List<ProjectResource> resources) {
+    this.resources = resources;
   }
 
   @Override
   public String toString() {
-    return this.value;
+    return ReflectionToStringBuilder.toString(this);
   }
 
-  public static ResourceType fromValue(String value) {
-    if (StringUtils.isBlank(value)) {
-      throw new IllegalArgumentException("Value cannot be null or empty!");
-    }
-
-    for (ResourceType rt : ResourceType.values()) {
-      if (value.equalsIgnoreCase(rt.value)) {
-        return rt;
-      }
-    }
-
-    throw new IllegalArgumentException("Cannot create enum from " + value + " value!");
+  /** @return the resources */
+  public List<ProjectResource> getResources() {
+    return resources;
   }
+
+  /** @param resources the resources to set */
+  public void setResources(List<ProjectResource> resources) {
+    this.resources = resources;
+  }
+
 }

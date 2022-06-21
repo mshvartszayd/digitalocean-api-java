@@ -34,50 +34,7 @@ import com.myjeeva.digitalocean.common.RequestMethod;
 import com.myjeeva.digitalocean.exception.DigitalOceanException;
 import com.myjeeva.digitalocean.exception.RequestUnsuccessfulException;
 import com.myjeeva.digitalocean.http.client.methods.CustomHttpDelete;
-import com.myjeeva.digitalocean.pojo.Account;
-import com.myjeeva.digitalocean.pojo.Action;
-import com.myjeeva.digitalocean.pojo.Actions;
-import com.myjeeva.digitalocean.pojo.Backups;
-import com.myjeeva.digitalocean.pojo.Certificate;
-import com.myjeeva.digitalocean.pojo.Certificates;
-import com.myjeeva.digitalocean.pojo.Delete;
-import com.myjeeva.digitalocean.pojo.Domain;
-import com.myjeeva.digitalocean.pojo.DomainRecord;
-import com.myjeeva.digitalocean.pojo.DomainRecords;
-import com.myjeeva.digitalocean.pojo.Domains;
-import com.myjeeva.digitalocean.pojo.Droplet;
-import com.myjeeva.digitalocean.pojo.DropletAction;
-import com.myjeeva.digitalocean.pojo.Droplets;
-import com.myjeeva.digitalocean.pojo.Firewall;
-import com.myjeeva.digitalocean.pojo.Firewalls;
-import com.myjeeva.digitalocean.pojo.FloatingIP;
-import com.myjeeva.digitalocean.pojo.FloatingIPAction;
-import com.myjeeva.digitalocean.pojo.FloatingIPs;
-import com.myjeeva.digitalocean.pojo.ForwardingRules;
-import com.myjeeva.digitalocean.pojo.HealthCheck;
-import com.myjeeva.digitalocean.pojo.Image;
-import com.myjeeva.digitalocean.pojo.ImageAction;
-import com.myjeeva.digitalocean.pojo.Images;
-import com.myjeeva.digitalocean.pojo.Kernels;
-import com.myjeeva.digitalocean.pojo.Key;
-import com.myjeeva.digitalocean.pojo.Keys;
-import com.myjeeva.digitalocean.pojo.LoadBalancer;
-import com.myjeeva.digitalocean.pojo.LoadBalancers;
-import com.myjeeva.digitalocean.pojo.Neighbors;
-import com.myjeeva.digitalocean.pojo.Project;
-import com.myjeeva.digitalocean.pojo.Projects;
-import com.myjeeva.digitalocean.pojo.Regions;
-import com.myjeeva.digitalocean.pojo.Resource;
-import com.myjeeva.digitalocean.pojo.Resources;
-import com.myjeeva.digitalocean.pojo.Response;
-import com.myjeeva.digitalocean.pojo.Sizes;
-import com.myjeeva.digitalocean.pojo.Snapshot;
-import com.myjeeva.digitalocean.pojo.Snapshots;
-import com.myjeeva.digitalocean.pojo.Tag;
-import com.myjeeva.digitalocean.pojo.Tags;
-import com.myjeeva.digitalocean.pojo.Volume;
-import com.myjeeva.digitalocean.pojo.VolumeAction;
-import com.myjeeva.digitalocean.pojo.Volumes;
+import com.myjeeva.digitalocean.pojo.*;
 import com.myjeeva.digitalocean.serializer.DropletSerializer;
 import com.myjeeva.digitalocean.serializer.FirewallSerializer;
 import com.myjeeva.digitalocean.serializer.LoadBalancerSerializer;
@@ -91,6 +48,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -1666,6 +1625,14 @@ public class DigitalOceanClient implements DigitalOcean, Constants {
   }
 
   @Override
+  public Firewalls listDropletFirewalls(Integer dropletId) throws DigitalOceanException, RequestUnsuccessfulException {
+    validateDropletId(dropletId);
+
+    Object[] params = {dropletId};
+    return (Firewalls) perform(new ApiRequest(ApiAction.LIST_DROPLET_FIREWALLS, params)).getData();
+  }
+
+  @Override
   public Project createProject(Project project)
       throws DigitalOceanException, RequestUnsuccessfulException {
 
@@ -1770,6 +1737,49 @@ public class DigitalOceanClient implements DigitalOcean, Constants {
     Object[] params = {projectId};
     return (Delete) perform(new ApiRequest(ApiAction.DELETE_PROJECT, params)).getData();
   }
+
+  @Override
+  public ProjectResources listProjectResources(Project project) throws DigitalOceanException, RequestUnsuccessfulException {
+    if (null == project
+            || StringUtils.isBlank(project.getId())) {
+      throw new IllegalArgumentException(
+              "Missing required parameters [Name, Description, Purpose].");
+    }
+
+    Object[] params = {project.getId()};
+
+    return (ProjectResources) perform(new ApiRequest(ApiAction.GET_PROJECT_RESOURCES, params)).getData();
+  }
+
+  @Override
+  public ProjectResources assignResourcesToProject(Project project, Resources resources) throws DigitalOceanException, RequestUnsuccessfulException {
+    if (null == project
+            || StringUtils.isBlank(project.getId())) {
+      throw new IllegalArgumentException(
+              "Missing required parameters [Name, Description, Purpose].");
+    }
+
+    Object[] params = {project.getId()};
+
+    Map<String, List<String>> data = new HashMap<>();
+    data.put("resources",
+            resources.getResources().stream()
+                    .map(resource -> "do:" + resource.getType().toString() + ":" +  resource.getId())
+                    .collect(Collectors.toList()));
+
+    return (ProjectResources) perform(new ApiRequest(ApiAction.ASSIGN_PROJECT_RESOURCES, data, params)).getData();
+  }
+
+  @Override
+  public ProjectResources listDefaultProjectResources() throws DigitalOceanException, RequestUnsuccessfulException {
+    return (ProjectResources) perform(new ApiRequest(ApiAction.GET_DEFAULT_PROJECT_RESOURCES)).getData();
+  }
+
+  @Override
+  public ProjectResources assignDefaultProjectResources(Resources resources) throws DigitalOceanException, RequestUnsuccessfulException {
+    return (ProjectResources) perform(new ApiRequest(ApiAction.ASSIGN_DEFAULT_PROJECT_RESOURCES)).getData();
+  }
+
 
   //
   // Private methods

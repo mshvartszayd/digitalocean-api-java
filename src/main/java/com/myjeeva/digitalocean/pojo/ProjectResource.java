@@ -18,61 +18,68 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.myjeeva.digitalocean.common;
+package com.myjeeva.digitalocean.pojo;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.StringUtils;
+import com.myjeeva.digitalocean.common.ResourceStatus;
+import com.myjeeva.digitalocean.common.ResourceType;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import java.util.Map;
 
 /**
- * Enumeration of DigitalOcean Resource Types
  *
- * @author Jeevanandam M. (jeeva@myjeeva.com)
- * @since v2.0
  */
-public enum ResourceType {
-  @SerializedName("droplet")
-  DROPLET("droplet"),
+public class ProjectResource {
 
-  @SerializedName("volume")
-  VOLUME("volume"),
+  @Expose
+  @SerializedName("urn")
+  private String urn;
 
-  @SerializedName("image")
-  IMAGE("image"),
+  @Expose
+  @SerializedName("assigned_at")
+  private String assignedAt;
 
-  @SerializedName("backend")
-  BACKEND("backend"),
+  @Expose
+  @SerializedName("links")
+  private Map<String, String> links;
 
-  @SerializedName("floating_ip")
-  FLOATING_IP("floatingip"),
+  @Expose
+  @SerializedName("status")
+  private ResourceStatus status;
 
-  @SerializedName("loadbalancer")
-  LOAD_BALANCER("loadbalancer"),
+  public ProjectResource() {}
 
-  @SerializedName("firewall")
-  FIREWALL("firewall");
-
-  private String value;
-
-  private ResourceType(String value) {
-    this.value = value;
+  public String getUrn() {
+    return urn;
   }
 
-  @Override
-  public String toString() {
-    return this.value;
+  public void setUrn(String urn) {
+    this.urn = urn;
   }
 
-  public static ResourceType fromValue(String value) {
-    if (StringUtils.isBlank(value)) {
-      throw new IllegalArgumentException("Value cannot be null or empty!");
-    }
+  public String getAssignedAt() {
+    return assignedAt;
+  }
 
-    for (ResourceType rt : ResourceType.values()) {
-      if (value.equalsIgnoreCase(rt.value)) {
-        return rt;
-      }
-    }
+  public void setAssignedAt(String assignedAt) {
+    this.assignedAt = assignedAt;
+  }
 
-    throw new IllegalArgumentException("Cannot create enum from " + value + " value!");
+  public Map<String, String> getLinks() {
+    return links;
+  }
+
+  public void setLinks(Map<String, String> links) {
+    this.links = links;
+  }
+
+  public ResourceStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(ResourceStatus status) {
+    this.status = status;
   }
 }

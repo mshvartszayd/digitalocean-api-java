@@ -24,36 +24,30 @@ import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Enumeration of DigitalOcean Resource Types
+ * Enumeration of DigitalOcean Action Status
  *
  * @author Jeevanandam M. (jeeva@myjeeva.com)
  * @since v2.0
  */
-public enum ResourceType {
-  @SerializedName("droplet")
-  DROPLET("droplet"),
+public enum ResourceStatus {
+  @SerializedName("ok")
+  OK("ok"),
 
-  @SerializedName("volume")
-  VOLUME("volume"),
+  @SerializedName("not_found")
+  NOT_FOUND("in-progress"),
 
-  @SerializedName("image")
-  IMAGE("image"),
+  @SerializedName("assigned")
+  ASSIGNED("assigned"),
 
-  @SerializedName("backend")
-  BACKEND("backend"),
+  @SerializedName("already_assigned")
+  ALREADY_ASSIGNED("already_assigned"),
 
-  @SerializedName("floating_ip")
-  FLOATING_IP("floatingip"),
-
-  @SerializedName("loadbalancer")
-  LOAD_BALANCER("loadbalancer"),
-
-  @SerializedName("firewall")
-  FIREWALL("firewall");
+  @SerializedName("service_down")
+  SERVICE_DOWN("service_down");
 
   private String value;
 
-  private ResourceType(String value) {
+  private ResourceStatus(String value) {
     this.value = value;
   }
 
@@ -62,14 +56,14 @@ public enum ResourceType {
     return this.value;
   }
 
-  public static ResourceType fromValue(String value) {
+  public static ResourceStatus fromValue(String value) {
     if (StringUtils.isBlank(value)) {
       throw new IllegalArgumentException("Value cannot be null or empty!");
     }
 
-    for (ResourceType rt : ResourceType.values()) {
-      if (value.equalsIgnoreCase(rt.value)) {
-        return rt;
+    for (ResourceStatus as : ResourceStatus.values()) {
+      if (value.equalsIgnoreCase(as.value)) {
+        return as;
       }
     }
 

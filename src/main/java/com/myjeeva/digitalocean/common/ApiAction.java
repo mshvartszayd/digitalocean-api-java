@@ -20,42 +20,7 @@
  */
 package com.myjeeva.digitalocean.common;
 
-import com.myjeeva.digitalocean.pojo.Account;
-import com.myjeeva.digitalocean.pojo.Action;
-import com.myjeeva.digitalocean.pojo.Actions;
-import com.myjeeva.digitalocean.pojo.Backups;
-import com.myjeeva.digitalocean.pojo.Certificate;
-import com.myjeeva.digitalocean.pojo.Certificates;
-import com.myjeeva.digitalocean.pojo.Delete;
-import com.myjeeva.digitalocean.pojo.Domain;
-import com.myjeeva.digitalocean.pojo.DomainRecord;
-import com.myjeeva.digitalocean.pojo.DomainRecords;
-import com.myjeeva.digitalocean.pojo.Domains;
-import com.myjeeva.digitalocean.pojo.Droplet;
-import com.myjeeva.digitalocean.pojo.Droplets;
-import com.myjeeva.digitalocean.pojo.Firewall;
-import com.myjeeva.digitalocean.pojo.Firewalls;
-import com.myjeeva.digitalocean.pojo.FloatingIP;
-import com.myjeeva.digitalocean.pojo.FloatingIPs;
-import com.myjeeva.digitalocean.pojo.Image;
-import com.myjeeva.digitalocean.pojo.Images;
-import com.myjeeva.digitalocean.pojo.Kernels;
-import com.myjeeva.digitalocean.pojo.Key;
-import com.myjeeva.digitalocean.pojo.Keys;
-import com.myjeeva.digitalocean.pojo.LoadBalancer;
-import com.myjeeva.digitalocean.pojo.LoadBalancers;
-import com.myjeeva.digitalocean.pojo.Neighbors;
-import com.myjeeva.digitalocean.pojo.Project;
-import com.myjeeva.digitalocean.pojo.Projects;
-import com.myjeeva.digitalocean.pojo.Regions;
-import com.myjeeva.digitalocean.pojo.Response;
-import com.myjeeva.digitalocean.pojo.Sizes;
-import com.myjeeva.digitalocean.pojo.Snapshot;
-import com.myjeeva.digitalocean.pojo.Snapshots;
-import com.myjeeva.digitalocean.pojo.Tag;
-import com.myjeeva.digitalocean.pojo.Tags;
-import com.myjeeva.digitalocean.pojo.Volume;
-import com.myjeeva.digitalocean.pojo.Volumes;
+import com.myjeeva.digitalocean.pojo.*;
 
 /**
  * Enumeration of DigitalOcean RESTful resource information.
@@ -93,6 +58,7 @@ public enum ApiAction {
   ENABLE_DROPLET_PRIVATE_NETWORKING(
       "/droplets/%s/actions", "action", RequestMethod.POST, Action.class),
   SNAPSHOT_DROPLET("/droplets/%s/actions", "action", RequestMethod.POST, Action.class),
+  LIST_DROPLET_FIREWALLS("/droplets/%s/firewalls", "firewalls", RequestMethod.GET, Firewalls.class),
 
   // Account
   GET_ACCOUNT_INFO("/account", "account", RequestMethod.GET, Account.class),
@@ -196,6 +162,12 @@ public enum ApiAction {
   UPDATE_DEFAULT_PROJECT("/projects/default", "project", RequestMethod.PUT, Project.class),
   PATCH_DEFAULT_PROJECT("/projects/default", "project", RequestMethod.PATCH, Project.class),
   DELETE_PROJECT("/projects/%s", "response", RequestMethod.DELETE, Delete.class),
+
+  // Project Resources
+  GET_PROJECT_RESOURCES("/projects/%s/resources", "resources", RequestMethod.GET, ProjectResources.class),
+  GET_DEFAULT_PROJECT_RESOURCES("/projects/default/resources", "resources", RequestMethod.GET, ProjectResources.class),
+  ASSIGN_PROJECT_RESOURCES("/projects/%s/resources", "resources", RequestMethod.POST, ProjectResources.class),
+  ASSIGN_DEFAULT_PROJECT_RESOURCES("/projects/default/resources", "resources", RequestMethod.POST, ProjectResources.class),
 
   // Load Balancers
   CREATE_LOAD_BALANCER("/load_balancers", "load_balancer", RequestMethod.POST, LoadBalancer.class),
